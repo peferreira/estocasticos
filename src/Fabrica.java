@@ -3,7 +3,7 @@ import java.util.Random;
 public class Fabrica {
 
 	private int numFigurinhasAlbum, numFigurinhasPacote;
-	Random rand;
+	private Random rand;
 
 	/* numero de figurinhas e numero de pacotinhos */
 	Fabrica(int numFigurinhasAlbum, int numFigurinhasPacote) {
@@ -25,5 +25,12 @@ public class Fabrica {
 			
 		}
 		return (p);
+	}
+	
+	public int tamanhoAlbum(){
+		return numFigurinhasAlbum;
+	}
+	public int tamanhoPacotinho(){
+		return numFigurinhasPacote;
 	}
 }
