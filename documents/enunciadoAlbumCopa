@@ -1,0 +1,29 @@
+[ESTOCÁSTICOS] Quem quer tirar 10 no trabalho?
+Basta fazer isso:
+(Claro, fazer a simulação proposta inicialmente)
+(O álbum mencionado aqui é o da copa do mundo 2014 panini)
+Fazer uma simulação do tempo de preenchimento de 5 álbuns com pacotes contendo 5 figurinhas, onde cada pacote aberto preenche os 5 álbuns da seguinte forma, a primeira figurinha do pacote vai para o primeiro álbum, a segunda figurinha vai para o segundo álbum, ... .
+Fazer uma simulação do tempo de preenchimento do álbum com pacotes contendo 1 figurinha.
+Comparar essas duas simulações.
+Fazer uma simulação do tempo de preenchimento de 5 álbuns com pacotes contendo 5 figurinhas, onde cada pacote aberto preenche todos os álbuns de forma a otimizar o tempo de preenchimento dos álbuns.
+Encontrar o tempo esperado do preenchimento do álbum, resolvendo a seguinte equação:
+(T_(i,649) é o tempo de sair de i e ir para 649, onde i é a quantidade de tipos de figurinhas que você tem e 649 é o número de tipos de figurinhas da copa.
+X_i é v.a. com distribuição hipergeométrica que representa o número de figurinhas novas ao abrir o pacote no instante i, que a professora explicou em uma das aulas dela.)
+T_(0,649)=1+T_(5,649)
+T_(5,649)=(1+T_(5,649))*P(X_5=0) + (1+T_(6,649))*P(X_5=1)+(1+T_(7,649))*P(X_5=2)+(1+T_(8,649))*P(X_5=3)+(1+T_(9,649))*P(X_5=4)+(1+T_(10,649))*P(X_5=5)
+...
+T_(i,649)=(1+T_(i,649))*P(X_i=0) + (1+T_(i+1,649))*P(X_i=1)+(1+T_(i+2,649))*P(X_5=2)+(1+T_(i+3,649))*P(X_5=3)+(1+T_(i+4,649))*P(X_5=4)+(1+T_(i+5,649))*P(X_5=5)
+...
+(Tomem cuidado nas últimas equações)
+(Não vão tentar resolver essa equação na mão, façam um programa pra resolver essa equação.)
+Comparem essa esperança com o resultado da simulação do tempo de preenchimento do álbum da copa.
+Acho que é só isso XD.
+
+
+
+utilizei: JfreeChart
+http://www.jfree.org/jfreechart/
+para testar valores da hypergeometrica:
+http://stattrek.com/online-calculator/hypergeometric.aspx 
+resolver esperanças com recursoes:
+http://math.stackexchange.com/questions/521609/solving-expected-value-with-recursion

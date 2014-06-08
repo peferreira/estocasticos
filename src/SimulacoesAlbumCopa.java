@@ -4,24 +4,42 @@ public class SimulacoesAlbumCopa {
 	public static void main(String[] args) {
 		SimulacoesAlbumCopa s = new SimulacoesAlbumCopa();
 		s.simulacao();
+		/*
+		 * para que a simulação com graficos funcione precisamos das bibliotecas graficas
+		 * ela foi utilizada para gerar os graficos do relatorio
+		 * s.simulacaoComGraficos():
+		 */
 	}
 
-	void simulacao(){
+	/*
+	 * void simulacaoComGraficos() { Fabrica f = new Fabrica(650, 5); Fabrica f2
+	 * = new Fabrica(650, 1); GeradorDeGraficos g = new GeradorDeGraficos();
+	 * 
+	 * 
+	 * g.criaHistograma(primeiraSimulacao(10000, f));
+	 * g.criaHistograma(primeiraSimulacao(10000, f2));
+	 * 
+	 * g.criaHistograma(segundaSimulacao(1000, f));
+	 * g.criaHistograma(terceiraSimulação(1000, f));
+	 * g.criaPlotDePontos(tempoEsperado());
+	 * 
+	 * }
+	 */
+	void simulacao() {
 		Fabrica f = new Fabrica(650, 5);
 		Fabrica f2 = new Fabrica(650, 1);
-		GeradorDeGraficos g = new GeradorDeGraficos();
 		/* simulação normal do album */
-		g.criaHistograma(primeiraSimulacao(10000, f));
+		primeiraSimulacao(10000, f);
 
 		/* igual a primeira mas utiliza 1 figurinha por pacotinho */
-		g.criaHistograma(primeiraSimulacao(10000, f2));
+		primeiraSimulacao(10000, f2);
 
-		g.criaHistograma(segundaSimulacao(1000, f));
-		g.criaHistograma(terceiraSimulação(1000, f));
+		segundaSimulacao(1000, f);
+		terceiraSimulação(1000, f);
 		tempoEsperado();
-		
+
 	}
-	
+
 	public String calcularCusto(int numPacotinho, double valorPacotinho) {
 		String custo = null;
 		double valor = numPacotinho * valorPacotinho;
@@ -41,16 +59,14 @@ public class SimulacoesAlbumCopa {
 		double vetorAmostras[] = new double[n];
 		int numPacotinhos;
 		for (int i = 0; i < n; i++) {
-			
+
 			numPacotinhos = completandoUmAlbum(f);
 
 			numPacotinhosTotais = numPacotinhosTotais + numPacotinhos;
 			vetorAmostras[i] = numPacotinhos;
-;
+			;
 		}
 
-		
-		
 		media = numPacotinhosTotais / n;
 		double valorPacotinho = valorFigurinha * f.tamanhoPacotinho();
 		System.out
@@ -96,10 +112,9 @@ public class SimulacoesAlbumCopa {
 		double vetorAmostras[] = new double[n];
 		int amostra;
 		for (int i = 0; i < n; i++) {
-			
+
 			amostra = completandoAlbum1ColecionadorPorFigurinhaNoPacotinho(f);
-			numPacotinhosTotais = numPacotinhosTotais
-					+ amostra
+			numPacotinhosTotais = numPacotinhosTotais + amostra
 					/ numDeColecionadores;
 			vetorAmostras[i] = amostra;
 		}
@@ -179,8 +194,7 @@ public class SimulacoesAlbumCopa {
 		int amostra;
 		for (int i = 0; i < n; i++) {
 			amostra = otimizandoAlbum1ColecionadorPorFigurinhaNoPacotinho(f);
-			numPacotinhosTotais = numPacotinhosTotais
-					+ amostra
+			numPacotinhosTotais = numPacotinhosTotais + amostra
 					/ numDeColecionadores;
 			vetorAmostras[i] = amostra;
 		}
@@ -233,7 +247,7 @@ public class SimulacoesAlbumCopa {
 	 * Encontrar o tempo esperado do preenchimento do álbum utilizando "Law of
 	 * Total Expectation"
 	 */
-	void tempoEsperado() {
+	double[] tempoEsperado() {
 		Hypergeometrica h = new Hypergeometrica();
 		double prob = 0;
 		int tamanhoAlbum = 649, tamanhoPacotinho = 5;
@@ -253,6 +267,7 @@ public class SimulacoesAlbumCopa {
 			}
 		}
 		System.out.println("Tempo esperado: " + tempoEsperado[1]);
+		return tempoEsperado;
 
 	}
 }
