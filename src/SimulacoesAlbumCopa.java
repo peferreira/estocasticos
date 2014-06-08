@@ -1,13 +1,15 @@
-public class SimulaçoesAlbumCopa {
+public class SimulacoesAlbumCopa {
 	Colecionador[] colecionadores;
 
 	public static void main(String[] args) {
-		SimulaçoesAlbumCopa s = new SimulaçoesAlbumCopa();
+		SimulacoesAlbumCopa s = new SimulacoesAlbumCopa();
 		Fabrica f = new Fabrica(650, 5);
 		Fabrica f2 = new Fabrica(650, 1);
-		s.primeiraSimulacao(500, f);
-		s.segundaSimulacao(500, f);
-		s.primeiraSimulacao(500, f2);
+		/*
+		 * s.primeiraSimulacao(500, f); s.primeiraSimulacao(500, f2);
+		 * s.segundaSimulacao(500, f); s.terceiraSimulação(500, f);
+		 */
+		System.out.println(s.tEsperado());
 	}
 
 	/*
@@ -79,7 +81,7 @@ public class SimulaçoesAlbumCopa {
 
 		media = numPacotinhosTotais / n;
 		System.out
-				.println("Segunda Simulação: média do número de pacotinhos para completar 1 album: "
+				.println("Segunda Simulação: média do número de pacotinhos para completar 5 albuns: "
 						+ media);
 		System.out.println(calcularCusto(media, valorPacotinho));
 
@@ -116,7 +118,7 @@ public class SimulaçoesAlbumCopa {
 		return true;
 	}
 
-	int completandoAlbum1ColecionadorPorFigurinhaNoPacotinho(Fabrica f) {
+	public int completandoAlbum1ColecionadorPorFigurinhaNoPacotinho(Fabrica f) {
 		Album album;
 		int numColecionadores = f.tamanhoPacotinho();
 		Colecionador colecionadores[] = new Colecionador[numColecionadores];
@@ -144,8 +146,22 @@ public class SimulaçoesAlbumCopa {
 	 * contendo 5 figurinhas, onde cada pacote aberto preenche todos os álbuns
 	 * de forma a otimizar o tempo de preenchimento dos álbuns.
 	 */
-	public void terceiraSimulação(Fabrica f) {
+	public void terceiraSimulação(int n, Fabrica f) {
+		int numPacotinhosTotais = 0, media = 0;
+		int numDeColecionadores = f.tamanhoPacotinho();
+		double valorFigurinha = 0.2;
+		double valorPacotinho = valorFigurinha * f.tamanhoPacotinho();
+		for (int i = 0; i < n; i++) {
+			numPacotinhosTotais = numPacotinhosTotais
+					+ otimizandoAlbum1ColecionadorPorFigurinhaNoPacotinho(f)
+					/ numDeColecionadores;
+		}
 
+		media = numPacotinhosTotais / n;
+		System.out
+				.println("Terceira Simulação: média do número de pacotinhos para completar 5 albuns de forma otimizada: "
+						+ media);
+		System.out.println(calcularCusto(media, valorPacotinho));
 	}
 
 	/*
@@ -168,19 +184,42 @@ public class SimulaçoesAlbumCopa {
 				colecionadores[i].incrementaPacotinhosComprados();
 				if (!album.figurinhaJaExisteNoAlbum(figurinha)) {
 					album.colarFigurinha(figurinha);
-				}
-				for(int j = 0; j < p.getTamanho(); j++){
-					if(j != i){
-						if (!album.figurinhaJaExisteNoAlbum(figurinha)) {
-							album.colarFigurinha(figurinha);
-						}					
+				} else {
+					for (int j = 0; j < p.getTamanho(); j++) {
+						if (j != i) {
+							album = colecionadores[j].getAlbum();
+							if (!album.figurinhaJaExisteNoAlbum(figurinha)) {
+								album.colarFigurinha(figurinha);
+							}
+						}
 					}
 				}
-
 			}
 		}
 		albumColecionadoresCompleto(colecionadores);
 		return colecionadores[0].getNumPacotinhosComprados();
 	}
 
+	double tEsperado() {
+		Hypergeometrica h = new Hypergeometrica();
+		double prob = 0;
+		int tamanhoAlbum = 649, tamanhoPacotinho = 5;
+		double[] tempoEsperado = new double[tamanhoAlbum+1];
+		tempoEsperado[649] = 0;
+		for (int i = tamanhoAlbum - 1; i > 0; i--) {
+			prob = h.funcaoDensidade(tamanhoPacotinho, tamanhoAlbum,
+					tamanhoAlbum - i, 0);
+			tempoEsperado[i] = prob / (1 - prob);
+			for (int j = 1; j <= tamanhoPacotinho; j++) {
+				if (i + j <= tamanhoAlbum) {
+					tempoEsperado[i] = tempoEsperado[i]+ (1 + tempoEsperado[i + j])
+							* h.funcaoDensidade(tamanhoPacotinho, tamanhoAlbum,
+									tamanhoAlbum - i, j) / (1 - prob);
+				}
+			}
+		}
+		return tempoEsperado[1];
+	}
+
+	
 }
